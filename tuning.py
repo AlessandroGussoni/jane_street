@@ -224,15 +224,13 @@ class OptunaOptimizer:
 
         component_columns = [f"component_{i}" for i in range(15)]
         
-        # Save fitted objects if fold_idx is provided (during final training)
+        # this should go into feng
         if fold_idx is not None:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             
-            # Save FeatureEngineer
             feng_path = self.artifacts_dir / f"feature_engineer_fold_{fold_idx}_{timestamp}.joblib"
             joblib.dump(feng, feng_path)
             
-            # Save PCA
             pca_path = self.artifacts_dir / f"pca_fold_{fold_idx}_{timestamp}.joblib"
             joblib.dump(pca, pca_path)
         
@@ -250,7 +248,7 @@ class OptunaOptimizer:
                 reference=train_dataset,
                 free_raw_data=True
             )
-        else:  # xgboost
+        else:  # xgboost (change to elif)
             train_dataset = xgb.DMatrix(
                 X_train, y_train, weight=w_train,
                 feature_names=feature_cols,
