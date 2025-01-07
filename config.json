@@ -1,0 +1,7 @@
+{
+    "data_path": "/Users/alessandro.gussoni/Documents/jane_street/data_sample",
+    "output_path": "/Users/alessandro.gussoni/Documents/jane_street/outputs",
+    "categorical_cols": ["symbol_id", "feature_09", "feature_10", "feature_11"],
+    "n_trials": 10,
+    "model_type": "lightgbm"
+}
