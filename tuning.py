@@ -21,7 +21,6 @@ from loss import (
 
 import os
 
-@dataclass
 class OptunaOptimizer:
 
     def __init__(self,
