@@ -34,13 +34,12 @@ class FeatureEngineer:
     def _find_top_correlated_features(self, df: Union[pl.LazyFrame, pl.DataFrame]) -> None:
         df = df.collect() if isinstance(df, pl.LazyFrame) else df
         
-        # Calculate correlations with responder_6
         corrs = []
         for feat in self.feature_cols:
             corr = df.select(pl.corr(feat, "responder_6")).to_numpy()[0][0]
             corrs.append((feat, corr))
         
-        # Sort and get top 10
+        # put this into config i guess
         self.top_corr_features = [feat for feat, _ in sorted(corrs, key=lambda x: abs(x[1]), reverse=True)[:10]]
 
     def _apply_quantile_transform(self, df: Union[pl.LazyFrame, pl.DataFrame]) -> List[pl.Expr]:
@@ -49,11 +48,9 @@ class FeatureEngineer:
 
         df = df.collect() if isinstance(df, pl.LazyFrame) else df
         
-        # Fit and transform the features
         feature_matrix = df.select(self.top_corr_features).to_numpy()
         transformed = self.qt.fit_transform(feature_matrix)
         
-        # Create new column expressions
         return [
             pl.lit(transformed[:, i]).alias(f"{feat}_qt")
             for i, feat in enumerate(self.top_corr_features)
